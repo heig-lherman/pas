@@ -91,10 +91,10 @@ def subtract(x: FingerPrint, y: FingerPrint): FingerPrint = {
   @tailrec
   def loop(x: List[Char], y: List[Char], acc: FingerPrint): FingerPrint =
     (x, y) match {
-      case (cx :: xs, cy :: ys) if cx == cy => loop(xs, ys, acc)
-      case (cx :: xs, cy :: ys) if cx != cy => loop(xs, y, acc + cx)
-      case (_, Nil)                         => acc + x.mkString
-      case (_, _)                           => acc
+      case (cx :: xs, cy :: ys) => if cx == cy then loop(xs, ys, acc)
+                                               else loop(xs, y, acc + cx)
+      case (_, Nil) => acc + x.mkString
+      case (_, _)   => acc
     }
 
   loop(x.toList, y.toList, "")
@@ -136,10 +136,7 @@ def sentenceAnagrams(sentence: Sentence): List[Sentence] = {
       } yield word :: rest
   }
 
-  sentence match {
-    case Nil => List(Nil)
-    case _   => findAnagrams(fingerPrint(sentence))
-  }
+  findAnagrams(fingerPrint(sentence))
 }
 
 // Test code with for example:
