@@ -87,7 +87,7 @@ val fd = Future
     case Success(rs) =>
       println(s"f9 + f10 + f11 = ${rs.map(_._1).sum}")
     case Failure(exc) =>
-      println(s"at least one future did not complete: ${exc.getMessage()}")
+      println(s"at least one future did not complete: ${exc.getMessage}")
   }
 
 // e.
@@ -97,12 +97,12 @@ val fe = Future
     case Success((_, name)) =>
       println(s"$name a fini en premier")
     case Failure(exception) =>
-      println(s"no future completed: ${exception.getMessage()}")
+      println(s"no future completed: ${exception.getMessage}")
   }
 
 // f.
 val f15 = f("f15")
-val f16 = f15.failed.flatMap(_ => f(f"f19"))
+val f16 = f15.recoverWith(_ => f(f"f19"))
 
 Thread.sleep(1000)
 
